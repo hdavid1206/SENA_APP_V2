@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}Inicio - SENA Digital{% endblock %}
+
+{% block contenido %}
+
+<div class="seccion-hero">
+    <div class="hero-contenido text-center text-white">
+        <div class="insignia-bienvenida"><i class="fas fa-star me-2"></i>Sistema de Gestión Académica</div>
+        <h1 class="hero-titulo">Bienvenido a SENA Digital</h1>
+        <p class="hero-subtitulo">Plataforma integral para la gestión de aprendices, instructores y programas formativos</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-lg-4 col-md-6 mb-3">
+        <div class="tarjeta-estadistica">
+            <div class="estadistica-icono"><i class="fas fa-user-graduate"></i></div>
+            <div class="estadistica-numero">{{ total_aprendices|default:"0" }}</div>
+            <div class="estadistica-etiqueta">Aprendices Registrados</div>
+        </div>
+    </div>
+</div>
+
+<!-- Seccion Acciones Principales -->
+<h2 class="titulo-seccion">Módulos del Sistema</h2>
+<div class="row mb-4">
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="tarjeta-accion">
+            <div class="accion-icono"><i class="fas fa-users"></i></div>
+            <h3 class="accion-titulo">Gestión de Aprendices</h3>
+            <p class="accion-descripcion">Consulta, registra y administra toda la información de los aprendices del SENA.</p>
+            <a href="{% url 'aprendices:lista_aprendices' %}" class="boton-sena"><i class="fas fa-arrow-right me-2"></i>Acceder</a>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+    });
+</script>
+
+{% endblock %}

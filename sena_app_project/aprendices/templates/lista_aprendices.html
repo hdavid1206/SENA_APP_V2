@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}Lista de Aprendices - SENA Digital{% endblock %}
+
+{% block contenido %}
+
+<!-- Encabezado de Página -->
+<div class="encabezado-pagina">
+    <div class="d-flex flex-wrap justify-content-between align-items-center">
+        <div>
+            <h1 class="titulo-pagina"><i class="fas fa-users me-3"></i>Gestión de Aprendices</h1>
+            <p class="subtitulo-pagina mb-0">Administra y consulta la información de todos los aprendices SENA</p>
+        </div>
+        <div class="text-end mt-3 mt-md-0">
+            <span class="insignia-estadistica mb-2 mb-lg-0"><i class="fas fa-chart-bar me-2"></i>Total: {{ total_aprendices }} aprendiz{{ total_aprendices|pluralize }}</span>
+            <a href="{% url 'admin:aprendices_aprendiz_add' %}" class="boton-moderno"><i class="fas fa-plus me-2"></i>Nuevo Aprendiz</a>
+        </div>
+    </div>
+</div>
+
+<!-- Barra de Búsqueda -->
+<div class="barra-busqueda">
+    <div class="input-group">
+        <span class="input-group-text bg-transparent border-0 pe-0"><i class="fas fa-search" style="color: var(--sena-verde);"></i></span>
+        <input type="text" class="form-control border-0 shadow-none" placeholder="Buscar por nombre, documento o correo..." id="campoBusqueda">
+    </div>
+</div>
+
+<!-- Contenedor de la Tabla -->
+{% if lista_aprendices %}
+<div class="contenedor-tabla">
+    <div class="table-responsive">
+        <table class="table table-hover tabla-moderna" id="tablaAprendices">
+            <!-- ... (contenido de la tabla) ... -->
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="estado-vacio">
+    <!-- ... (contenido para cuando no hay aprendices) ... -->
+</div>
+{% endif %}
+
+<!-- Font Awesome para los iconos -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Script para la búsqueda -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // ... (código del buscador que tenías)
+    });
+</script>
+
+{% endblock %}
