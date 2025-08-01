@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Directorio de Aprendices - Sistema Integral SENA{% endblock %}
+{% block title %}Directorio de Instructores - Sistema Integral SENA{% endblock %}
 
 {% block content %}
 <style>
@@ -99,6 +99,55 @@
         color: var(--verde-primario);
     }
 
+    .seccion-estadisticas {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .tarjeta-estadistica {
+        background: var(--blanco);
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: var(--sombra-suave);
+        border: 1px solid rgba(40, 167, 69, 0.1);
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .tarjeta-estadistica::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, var(--verde-primario), var(--verde-secundario));
+    }
+
+    .tarjeta-estadistica:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--sombra-elevada);
+    }
+
+    .numero-estadistica {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--verde-primario);
+        margin-bottom: 0.5rem;
+    }
+
+    .label-estadistica {
+        color: var(--gris-medio);
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
     .seccion-filtros {
         background: var(--blanco);
         border-radius: 15px;
@@ -110,7 +159,7 @@
 
     .contenedor-filtros {
         display: grid;
-        grid-template-columns: 1fr auto auto;
+        grid-template-columns: 1fr auto auto auto;
         gap: 1rem;
         align-items: center;
     }
@@ -143,6 +192,15 @@
         transform: translateY(-50%);
         color: var(--gris-medio);
         font-size: 1.1rem;
+    }
+
+    .filtro-select {
+        padding: 1rem;
+        border: 2px solid rgba(40, 167, 69, 0.1);
+        border-radius: 10px;
+        background: var(--blanco);
+        font-size: 0.9rem;
+        min-width: 150px;
     }
 
     .boton-filtro {
@@ -212,10 +270,22 @@
         background: rgba(40, 167, 69, 0.02);
     }
 
-    .documento-destacado {
+    .codigo-destacado {
         font-weight: 700;
         color: var(--verde-primario);
-        font-size: 1.1rem;
+        font-size: 1rem;
+        font-family: 'Courier New', monospace;
+    }
+
+    .nombre-instructor {
+        font-weight: 600;
+        color: var(--negro);
+        font-size: 1rem;
+    }
+
+    .documento-instructor {
+        color: var(--gris-medio);
+        font-size: 0.9rem;
     }
 
     .enlace-correo {
@@ -230,18 +300,53 @@
         text-decoration: underline;
     }
 
-    .programa-etiqueta {
+    .especialidad-etiqueta {
         background: rgba(40, 167, 69, 0.1);
         color: var(--verde-oscuro);
-        padding: 0.3rem 0.8rem;
+        padding: 0.4rem 1rem;
         border-radius: 20px;
         font-size: 0.85rem;
         font-weight: 500;
+        display: inline-block;
+    }
+
+    .estado-etiqueta {
+        padding: 0.3rem 0.8rem;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .estado-activo {
+        background: rgba(40, 167, 69, 0.1);
+        color: var(--verde-oscuro);
+    }
+
+    .estado-inactivo {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+    }
+
+    .estado-vacaciones {
+        background: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+    }
+
+    .estado-licencia {
+        background: rgba(23, 162, 184, 0.1);
+        color: #17a2b8;
+    }
+
+    .modalidad-icono {
+        font-size: 1.2rem;
+        margin-right: 0.5rem;
     }
 
     .fecha-formateada {
         color: var(--gris-medio);
         font-weight: 500;
+        font-size: 0.9rem;
     }
 
     .boton-accion {
@@ -257,12 +362,21 @@
         display: inline-flex;
         align-items: center;
         gap: 0.3rem;
+        margin-right: 0.5rem;
     }
 
     .boton-accion:hover {
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
         color: var(--blanco);
+    }
+
+    .boton-ver {
+        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+    }
+
+    .boton-ver:hover {
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
     }
 
     .estado-vacio {
@@ -316,37 +430,6 @@
         color: var(--blanco);
     }
 
-    .contenedor-paginacion {
-        display: flex;
-        justify-content: center;
-        margin-top: 2rem;
-    }
-
-    .paginacion {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-    }
-
-    .enlace-pagina {
-        padding: 0.8rem 1.2rem;
-        border: 2px solid rgba(40, 167, 69, 0.1);
-        border-radius: 10px;
-        color: var(--verde-primario);
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        background: var(--blanco);
-    }
-
-    .enlace-pagina:hover,
-    .enlace-pagina.activo {
-        background: var(--verde-primario);
-        color: var(--blanco);
-        border-color: var(--verde-primario);
-        transform: translateY(-2px);
-    }
-
     @media (max-width: 768px) {
         .contenedor-encabezado {
             flex-direction: column;
@@ -369,6 +452,10 @@
             font-size: 1.8rem;
         }
 
+        .seccion-estadisticas {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
         .tabla-moderna {
             font-size: 0.85rem;
         }
@@ -383,7 +470,7 @@
         }
 
         .tabla-moderna {
-            min-width: 800px;
+            min-width: 1000px;
         }
     }
 
@@ -406,19 +493,38 @@
 <div class="encabezado-pagina animacion-entrada">
     <div class="contenedor-encabezado">
         <div class="info-encabezado">
-            <h2>Directorio de Aprendices SENA</h2>
-            <p class="subtitulo-encabezado">Gestión integral del registro estudiantil institucional</p>
+            <h2>Directorio de Instructores SENA</h2>
+            <p class="subtitulo-encabezado">Gestión integral del cuerpo docente institucional</p>
         </div>
         <div class="controles-encabezado">
             <div class="insignia-total">
-                <i class="fas fa-users"></i>
-                <span>Total: {{ total_aprendices|default:"0" }} aprendices</span>
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>Total: {{ total_instructores|default:"0" }} instructores</span>
             </div>
-            <a href="{% url 'admin:aprendices_aprendiz_add' %}" class="boton-nuevo">
+            <a href="{% url 'admin:instructores_instructor_add' %}" class="boton-nuevo">
                 <i class="fas fa-plus"></i>
-                Registrar Aprendiz
+                Registrar Instructor
             </a>
         </div>
+    </div>
+</div>
+
+<div class="seccion-estadisticas">
+    <div class="tarjeta-estadistica animacion-entrada">
+        <div class="numero-estadistica">{{ instructores_activos|default:"0" }}</div>
+        <div class="label-estadistica">Instructores Activos</div>
+    </div>
+    <div class="tarjeta-estadistica animacion-entrada">
+        <div class="numero-estadistica">{{ instructores_presenciales|default:"0" }}</div>
+        <div class="label-estadistica">Modalidad Presencial</div>
+    </div>
+    <div class="tarjeta-estadistica animacion-entrada">
+        <div class="numero-estadistica">{{ instructores_virtuales|default:"0" }}</div>
+        <div class="label-estadistica">Modalidad Virtual</div>
+    </div>
+    <div class="tarjeta-estadistica animacion-entrada">
+        <div class="numero-estadistica">{{ total_instructores|default:"0" }}</div>
+        <div class="label-estadistica">Total Registrados</div>
     </div>
 </div>
 
@@ -426,12 +532,21 @@
     <div class="contenedor-filtros">
         <div class="campo-busqueda">
             <i class="fas fa-search icono-busqueda"></i>
-            <input type="text" class="entrada-busqueda" placeholder="Buscar por nombre, documento o correo..." id="campoBusqueda">
+            <input type="text" class="entrada-busqueda" placeholder="Buscar por nombre, documento, especialidad..." id="campoBusqueda">
         </div>
-        <button class="boton-filtro" onclick="alternarFiltros()">
-            <i class="fas fa-filter"></i>
-            Filtros
-        </button>
+        <select class="filtro-select" id="filtroEstado">
+            <option value="">Todos los estados</option>
+            <option value="ACTIVO">Activos</option>
+            <option value="INACTIVO">Inactivos</option>
+            <option value="VACACIONES">En Vacaciones</option>
+            <option value="LICENCIA">En Licencia</option>
+        </select>
+        <select class="filtro-select" id="filtroModalidad">
+            <option value="">Todas las modalidades</option>
+            <option value="PRESENCIAL">Presencial</option>
+            <option value="VIRTUAL">Virtual</option>
+            <option value="MIXTA">Mixta</option>
+        </select>
         <button class="boton-filtro" onclick="exportarDatos()">
             <i class="fas fa-download"></i>
             Exportar
@@ -439,50 +554,84 @@
     </div>
 </div>
 
-{% if lista_aprendices %}
+{% if lista_instructores %}
 <div class="contenedor-tabla animacion-entrada aparecer">
     <table class="tabla-moderna">
         <thead>
             <tr>
-                <th><i class="fas fa-id-card"></i> Documento</th>
-                <th><i class="fas fa-user"></i> Nombre Completo</th>
-                <th><i class="fas fa-envelope"></i> Correo Electrónico</th>
-                <th><i class="fas fa-phone"></i> Teléfono</th>
-                <th><i class="fas fa-map-marker-alt"></i> Ciudad</th>
-                <th><i class="fas fa-graduation-cap"></i> Programa</th>
-                <th><i class="fas fa-calendar"></i> Fecha Nacimiento</th>
+                <th><i class="fas fa-id-badge"></i> Código</th>
+                <th><i class="fas fa-user"></i> Instructor</th>
+                <th><i class="fas fa-envelope"></i> Contacto</th>
+                <th><i class="fas fa-graduation-cap"></i> Especialidad</th>
+                <th><i class="fas fa-desktop"></i> Modalidad</th>
+                <th><i class="fas fa-circle"></i> Estado</th>
+                <th><i class="fas fa-calendar"></i> Ingreso</th>
                 <th><i class="fas fa-cogs"></i> Acciones</th>
             </tr>
         </thead>
-        <tbody id="tablaAprendices">
-            {% for aprendiz in lista_aprendices %}
-            <tr class="fila-aprendiz">
+        <tbody id="tablaInstructores">
+            {% for instructor in lista_instructores %}
+            <tr class="fila-instructor" 
+                data-estado="{{ instructor.estado }}" 
+                data-modalidad="{{ instructor.modalidad_trabajo }}">
                 <td>
-                    <span class="documento-destacado">{{ aprendiz.documento_identidad }}</span>
+                    <span class="codigo-destacado">{{ instructor.codigo_instructor }}</span>
                 </td>
                 <td>
-                    <strong>{{ aprendiz.nombre_completo }}</strong>
+                    <div>
+                        <div class="nombre-instructor">{{ instructor.nombre_completo }}</div>
+                        <div class="documento-instructor">{{ instructor.get_tipo_documento_display }}: {{ instructor.documento_identidad }}</div>
+                    </div>
                 </td>
                 <td>
-                    <a href="mailto:{{ aprendiz.correo }}" class="enlace-correo">
-                        {{ aprendiz.correo }}
+                    <div>
+                        <a href="mailto:{{ instructor.correo_electronico }}" class="enlace-correo">
+                            {{ instructor.correo_electronico }}
+                        </a>
+                        <div class="documento-instructor">{{ instructor.telefono_principal }}</div>
+                    </div>
+                </td>
+                <td>
+                    <span class="especialidad-etiqueta">{{ instructor.especialidad }}</span>
+                    <div class="documento-instructor">{{ instructor.experiencia_anos }} años exp.</div>
+                </td>
+                <td>
+                    <div>
+                        {% if instructor.modalidad_trabajo == 'PRESENCIAL' %}
+                            <i class="fas fa-building modalidad-icono" style="color: var(--verde-primario);"></i>
+                        {% elif instructor.modalidad_trabajo == 'VIRTUAL' %}
+                            <i class="fas fa-laptop modalidad-icono" style="color: #007bff;"></i>
+                        {% else %}
+                            <i class="fas fa-blender modalidad-icono" style="color: #6f42c1;"></i>
+                        {% endif %}
+                        {{ instructor.get_modalidad_trabajo_display }}
+                    </div>
+                </td>
+                <td>
+                    <span class="estado-etiqueta estado-{{ instructor.estado|lower }}">
+                        {% if instructor.estado == 'ACTIVO' %}
+                            <i class="fas fa-check-circle"></i>
+                        {% elif instructor.estado == 'INACTIVO' %}
+                            <i class="fas fa-times-circle"></i>
+                        {% elif instructor.estado == 'VACACIONES' %}
+                            <i class="fas fa-umbrella-beach"></i>
+                        {% else %}
+                            <i class="fas fa-pause-circle"></i>
+                        {% endif %}
+                        {{ instructor.get_estado_display }}
+                    </span>
+                </td>
+                <td>
+                    <span class="fecha-formateada">{{ instructor.fecha_ingreso|date:"d/m/Y" }}</span>
+                </td>
+                <td>
+                    <a href="{% url 'instructores:detalle_instructor' instructor.pk %}" 
+                        class="boton-accion boton-ver" title="Ver detalles del instructor">
+                        <i class="fas fa-eye"></i>
+                        Ver
                     </a>
-                </td>
-                <td>
-                    <span>{{ aprendiz.telefono|default:"No registrado" }}</span>
-                </td>
-                <td>
-                    <span>{{ aprendiz.ciudad|default:"No especificada" }}</span>
-                </td>
-                <td>
-                    <span class="programa-etiqueta">{{ aprendiz.programa|default:"Sin programa" }}</span>
-                </td>
-                <td>
-                    <span class="fecha-formateada">{{ aprendiz.fecha_nacimiento|date:"d/m/Y" }}</span>
-                </td>
-                <td>
-                    <a href="{% url 'admin:aprendices_aprendiz_change' aprendiz.pk %}" 
-                        class="boton-accion" title="Editar información del aprendiz">
+                    <a href="{% url 'admin:instructores_instructor_change' instructor.pk %}" 
+                        class="boton-accion" title="Editar información del instructor">
                         <i class="fas fa-edit"></i>
                         Editar
                     </a>
@@ -493,41 +642,52 @@
     </table>
 </div>
 
-<div class="contenedor-paginacion">
-    <div class="paginacion">
-        <a href="#" class="enlace-pagina">&laquo; Anterior</a>
-        <a href="#" class="enlace-pagina activo">1</a>
-        <a href="#" class="enlace-pagina">2</a>
-        <a href="#" class="enlace-pagina">3</a>
-        <a href="#" class="enlace-pagina">Siguiente &raquo;</a>
-    </div>
-</div>
-
 {% else %}
 <div class="estado-vacio animacion-entrada">
     <div class="icono-vacio">
-        <i class="fas fa-user-graduate"></i>
+        <i class="fas fa-chalkboard-teacher"></i>
     </div>
-    <h3 class="titulo-vacio">No hay aprendices registrados</h3>
+    <h3 class="titulo-vacio">No hay instructores registrados</h3>
     <p class="descripcion-vacio">
-        Actualmente no se encuentran aprendices registrados en el sistema institucional.<br>
-        Inicie el proceso de registro para comenzar a gestionar la información estudiantil.
+        Actualmente no se encuentran instructores registrados en el sistema institucional.<br>
+        Inicie el proceso de registro para comenzar a gestionar el cuerpo docente.
     </p>
-    <a href="{% url 'admin:aprendices_aprendiz_add' %}" class="boton-accion-vacio">
+    <a href="{% url 'admin:instructores_instructor_add' %}" class="boton-accion-vacio">
         <i class="fas fa-plus"></i>
-        Registrar Primer Aprendiz
+        Registrar Primer Instructor
     </a>
 </div>
 {% endif %}
 
 <script>
     document.getElementById('campoBusqueda').addEventListener('input', function(e) {
-        const terminoBusqueda = e.target.value.toLowerCase();
-        const filas = document.querySelectorAll('.fila-aprendiz');
+        filtrarInstructores();
+    });
+
+    document.getElementById('filtroEstado').addEventListener('change', function(e) {
+        filtrarInstructores();
+    });
+
+    document.getElementById('filtroModalidad').addEventListener('change', function(e) {
+        filtrarInstructores();
+    });
+
+    function filtrarInstructores() {
+        const terminoBusqueda = document.getElementById('campoBusqueda').value.toLowerCase();
+        const filtroEstado = document.getElementById('filtroEstado').value;
+        const filtroModalidad = document.getElementById('filtroModalidad').value;
+        const filas = document.querySelectorAll('.fila-instructor');
         
         filas.forEach(fila => {
             const texto = fila.textContent.toLowerCase();
-            if (texto.includes(terminoBusqueda)) {
+            const estado = fila.getAttribute('data-estado');
+            const modalidad = fila.getAttribute('data-modalidad');
+            
+            const coincideTexto = texto.includes(terminoBusqueda);
+            const coincideEstado = !filtroEstado || estado === filtroEstado;
+            const coincideModalidad = !filtroModalidad || modalidad === filtroModalidad;
+            
+            if (coincideTexto && coincideEstado && coincideModalidad) {
                 fila.style.display = '';
                 fila.classList.add('aparecer');
             } else {
@@ -535,10 +695,19 @@
                 fila.classList.remove('aparecer');
             }
         });
-    });
 
-    function alternarFiltros() {
-        alert('Funcionalidad de filtros avanzados - Próximamente disponible');
+        // Actualizar contador de resultados
+        const filasVisibles = document.querySelectorAll('.fila-instructor[style=""]').length;
+        actualizarContadorResultados(filasVisibles);
+    }
+
+    function actualizarContadorResultados(cantidad) {
+        const insignia = document.querySelector('.insignia-total span');
+        if (cantidad === {{ total_instructores|default:"0" }}) {
+            insignia.textContent = `Total: ${cantidad} instructores`;
+        } else {
+            insignia.textContent = `Mostrando: ${cantidad} de {{ total_instructores|default:"0" }} instructores`;
+        }
     }
 
     function exportarDatos() {
@@ -551,7 +720,7 @@
             elemento.style.animationDelay = `${indice * 0.1}s`;
         });
 
-        const filas = document.querySelectorAll('.fila-aprendiz');
+        const filas = document.querySelectorAll('.fila-instructor');
         filas.forEach(fila => {
             fila.addEventListener('mouseenter', function() {
                 this.style.background = 'rgba(40, 167, 69, 0.08)';
@@ -565,11 +734,35 @@
                 this.style.boxShadow = '';
             });
         });
+
+        const numerosEstadisticas = document.querySelectorAll('.numero-estadistica');
+        
+        const observador = new IntersectionObserver((entradas) => {
+            entradas.forEach(entrada => {
+                if (entrada.isIntersecting) {
+                    const numero = entrada.target;
+                    const valorFinal = parseInt(numero.textContent);
+                    let valorActual = 0;
+                    const incremento = valorFinal / 30;
+                    
+                    const timer = setInterval(() => {
+                        valorActual += incremento;
+                        if (valorActual >= valorFinal) {
+                            numero.textContent = valorFinal;
+                            clearInterval(timer);
+                        } else {
+                            numero.textContent = Math.floor(valorActual);
+                        }
+                    }, 50);
+                }
+            });
+        });
+        
+        numerosEstadisticas.forEach(numero => observador.observe(numero));
     });
 
     document.querySelectorAll('.boton-accion, .boton-nuevo, .boton-filtro').forEach(boton => {
         boton.addEventListener('click', function(e) {
-            // Efecto ripple
             const ripple = document.createElement('span');
             const rect = this.getBoundingClientRect();
             const size = Math.max(rect.width, rect.height);
@@ -591,7 +784,6 @@
 </script>
 
 <style>
-
     .ripple {
         position: absolute;
         border-radius: 50%;
@@ -608,6 +800,7 @@
         }
     }
 
+    /* Posición relativa para botones con ripple */
     .boton-accion, .boton-nuevo, .boton-filtro {
         position: relative;
         overflow: hidden;

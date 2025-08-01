@@ -1,47 +1,432 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block titulo %}Inicio - SENA Digital{% endblock %}
+{% block title %}Inicio - Sistema Integral de Gestión Académica SENA{% endblock %}
 
-{% block contenido %}
+{% block content %}
+<style>
+    .seccion-hero {
+        margin-bottom: 4rem;
+    }
+
+    .contenedor-hero {
+        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+        border-radius: 24px;
+        padding: 4rem;
+        text-align: center;
+        color: var(--blanco);
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--sombra-elevada);
+    }
+
+    .contenedor-hero::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        animation: flotante 6s ease-in-out infinite;
+    }
+
+    @keyframes flotante {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .titulo-principal {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(45deg, var(--blanco), rgba(255, 255, 255, 0.8));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        position: relative;
+        z-index: 2;
+    }
+
+    .subtitulo-principal {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+        font-weight: 300;
+        position: relative;
+        z-index: 2;
+    }
+
+    .descripcion-principal {
+        font-size: 1.1rem;
+        margin-bottom: 3rem;
+        opacity: 0.9;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        z-index: 2;
+        line-height: 1.7;
+    }
+
+    .contenedor-botones-hero {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 2;
+    }
+
+    .boton-hero {
+        background: var(--blanco);
+        color: var(--verde-primario);
+        padding: 1rem 2.5rem;
+        border: none;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .boton-hero:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        color: var(--verde-primario);
+    }
+
+    .boton-hero::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: radial-gradient(circle, rgba(40, 167, 69, 0.1) 0%, transparent 70%);
+        transition: all 0.3s ease;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .boton-hero:hover::after {
+        width: 300px;
+        height: 300px;
+    }
+
+    .seccion-servicios {
+        margin-top: 4rem;
+    }
+
+    .cuadricula-servicios {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .tarjeta-servicio {
+        background: var(--blanco);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: var(--sombra-suave);
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(40, 167, 69, 0.1);
+    }
+
+    .tarjeta-servicio::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, var(--verde-primario), var(--verde-secundario));
+    }
+
+    .tarjeta-servicio:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: var(--sombra-elevada);
+    }
+
+    .icono-servicio {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        color: var(--blanco);
+        font-size: 1.8rem;
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .tarjeta-servicio:hover .icono-servicio {
+        transform: rotateY(180deg);
+        box-shadow: 0 12px 35px rgba(40, 167, 69, 0.4);
+    }
+
+    .titulo-servicio {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--negro);
+        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .descripcion-servicio {
+        color: var(--gris-medio);
+        margin-bottom: 2rem;
+        line-height: 1.7;
+        font-size: 1rem;
+    }
+
+    .boton-servicio {
+        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+        color: var(--blanco);
+        padding: 0.9rem 2.2rem;
+        border: none;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        font-size: 1rem;
+    }
+
+    .boton-servicio:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+        color: var(--blanco);
+    }
+
+    .boton-servicio i {
+        transition: transform 0.3s ease;
+    }
+
+    .boton-servicio:hover i {
+        transform: translateX(3px);
+    }
+
+    .seccion-estadisticas {
+        background: linear-gradient(135deg, rgba(40, 167, 69, 0.05), rgba(32, 201, 151, 0.05));
+        border-radius: 20px;
+        padding: 3rem;
+        margin: 4rem 0;
+        text-align: center;
+    }
+
+    .titulo-estadisticas {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        color: var(--negro);
+    }
+
+    .contenedor-estadisticas {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+    }
+
+    .item-estadistica {
+        padding: 1.5rem;
+        background: var(--blanco);
+        border-radius: 15px;
+        box-shadow: var(--sombra-suave);
+        transition: all 0.3s ease;
+    }
+
+    .item-estadistica:hover {
+        transform: translateY(-5px);
+    }
+
+    .numero-estadistica {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--verde-primario);
+        margin-bottom: 0.5rem;
+    }
+
+    .label-estadistica {
+        color: var(--gris-medio);
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+    }
+
+    @media (max-width: 768px) {
+        .titulo-principal {
+            font-size: 2.5rem;
+        }
+
+        .contenedor-hero {
+            padding: 2.5rem 1.5rem;
+        }
+
+        .contenedor-botones-hero {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cuadricula-servicios {
+            grid-template-columns: 1fr;
+        }
+
+        .tarjeta-servicio {
+            padding: 2rem;
+        }
+
+        .seccion-estadisticas {
+            padding: 2rem 1rem;
+        }
+    }
+</style>
 
 <div class="seccion-hero">
-    <div class="hero-contenido text-center text-white">
-        <div class="insignia-bienvenida"><i class="fas fa-star me-2"></i>Sistema de Gestión Académica</div>
-        <h1 class="hero-titulo">Bienvenido a SENA Digital</h1>
-        <p class="hero-subtitulo">Plataforma integral para la gestión de aprendices, instructores y programas formativos</p>
-    </div>
-</div>
-
-<div class="row mb-4">
-    <div class="col-lg-4 col-md-6 mb-3">
-        <div class="tarjeta-estadistica">
-            <div class="estadistica-icono"><i class="fas fa-user-graduate"></i></div>
-            <div class="estadistica-numero">{{ total_aprendices|default:"0" }}</div>
-            <div class="estadistica-etiqueta">Aprendices Registrados</div>
+    <div class="contenedor-hero animacion-entrada">
+        <h1 class="titulo-principal">Bienvenido a SENA APP</h1>
+        <p class="subtitulo-principal">Sistema Integral de Gestión Académica del Servicio Nacional de Aprendizaje</p>
+        <p class="descripcion-principal">
+            Plataforma tecnológica avanzada diseñada para facilitar la administración y consulta eficiente de información académica, 
+            proporcionando herramientas integrales para la gestión de aprendices, instructores y programas formativos en el entorno 
+            educativo del SENA.
+        </p>
+        <div class="contenedor-botones-hero">
+            <a href="{% url 'aprendices:lista_aprendices' %}" class="boton-hero">
+                <i class="fas fa-user-graduate"></i>
+                Consultar Aprendices
+            </a>
+            <a href="{% url 'instructores:lista_instructores' %}" class="boton-hero">
+                <i class="fas fa-chalkboard-teacher"></i>
+                Consultar Instructores
+            </a>
+            <a href="{% url 'programas:lista_programas' %}" class="boton-hero">
+                <i class="fas fa-graduation-cap"></i>
+                Consultar Programas
+            </a>
         </div>
     </div>
 </div>
 
-<!-- Seccion Acciones Principales -->
-<h2 class="titulo-seccion">Módulos del Sistema</h2>
-<div class="row mb-4">
-    <div class="col-lg-4 col-md-6 mb-4">
-        <div class="tarjeta-accion">
-            <div class="accion-icono"><i class="fas fa-users"></i></div>
-            <h3 class="accion-titulo">Gestión de Aprendices</h3>
-            <p class="accion-descripcion">Consulta, registra y administra toda la información de los aprendices del SENA.</p>
-            <a href="{% url 'aprendices:lista_aprendices' %}" class="boton-sena"><i class="fas fa-arrow-right me-2"></i>Acceder</a>
+<div class="seccion-estadisticas animacion-entrada">
+    <h2 class="titulo-estadisticas">Gestión Académica Integral</h2>
+    <div class="contenedor-estadisticas">
+        <div class="item-estadistica">
+            <div class="numero-estadistica">{{ total_aprendices|default:"0" }}</div>
+            <div class="label-estadistica">Aprendices Registrados</div>
+        </div>
+        <div class="item-estadistica">
+            <div class="numero-estadistica">{{ total_instructores|default:"0" }}</div>
+            <div class="label-estadistica">Instructores Activos</div>
+        </div>
+        <div class="item-estadistica">
+            <div class="numero-estadistica">{{ total_programas|default:"0" }}</div>
+            <div class="label-estadistica">Programas Disponibles</div>
         </div>
     </div>
 </div>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<div class="seccion-servicios">
+    <div class="cuadricula-servicios">
+        <div class="tarjeta-servicio animacion-entrada">
+            <div class="icono-servicio">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3 class="titulo-servicio">Directorio de Aprendices</h3>
+            <p class="descripcion-servicio">
+                Acceda al registro completo y actualizado de todos los estudiantes matriculados en la institución. 
+                Consulte información detallada, datos de contacto y estado académico de cada aprendiz registrado en el sistema.
+            </p>
+            <a href="{% url 'aprendices:lista_aprendices' %}" class="boton-servicio">
+                Explorar Directorio
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="tarjeta-servicio animacion-entrada">
+            <div class="icono-servicio">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </div>
+            <h3 class="titulo-servicio">Gestión de Instructores</h3>
+            <p class="descripcion-servicio">
+                Consulte el directorio completo del cuerpo docente registrado en el sistema institucional. 
+                Acceda a información sobre especialidades, programas asignados y datos de contacto actualizados de cada instructor.
+            </p>
+            <a href="{% url 'instructores:lista_instructores' %}" class="boton-servicio">
+                Ver Instructores
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="tarjeta-servicio animacion-entrada">
+            <div class="icono-servicio">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h3 class="titulo-servicio">Catálogo de Programas</h3>
+            <p class="descripcion-servicio">
+                Explore la oferta académica integral de la institución educativa. 
+                Consulte detalles completos sobre cada programa formativo, incluyendo características específicas, duración y modalidades disponibles.
+            </p>
+            <a href="{% url 'programas:lista_programas' %}" class="boton-servicio">
+                Consultar Programas
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-
+        const numeros = document.querySelectorAll('.numero-estadistica');
+        
+        const observador = new IntersectionObserver((entradas) => {
+            entradas.forEach(entrada => {
+                if (entrada.isIntersecting) {
+                    const numero = entrada.target;
+                    const valorFinal = parseInt(numero.textContent);
+                    let valorActual = 0;
+                    const incremento = valorFinal / 50;
+                    
+                    const timer = setInterval(() => {
+                        valorActual += incremento;
+                        if (valorActual >= valorFinal) {
+                            numero.textContent = valorFinal;
+                            clearInterval(timer);
+                        } else {
+                            numero.textContent = Math.floor(valorActual);
+                        }
+                    }, 30);
+                }
+            });
+        });
+        
+        numeros.forEach(numero => observador.observe(numero));
+        
+        window.addEventListener('scroll', function() {
+            const desplazamiento = window.pageYOffset;
+            const hero = document.querySelector('.contenedor-hero');
+            if (hero) {
+                hero.style.transform = `translateY(${desplazamiento * 0.1}px)`;
+            }
+        });
     });
 </script>
-
 {% endblock %}

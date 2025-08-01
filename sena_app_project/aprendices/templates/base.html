@@ -4,37 +4,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}SENA APP{% endblock %}</title>
+    <title>{% block title %}SENA APP - Sistema Integral de Gestión Académica{% endblock %}</title>
     {% load static %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --verde-primario: #28a745;
+            --verde-secundario: #20c997;
+            --verde-oscuro: #1e7e34;
+            --verde-claro: #d4edda;
+            --blanco: #ffffff;
+            --gris-claro: #f8f9fa;
+            --gris-medio: #6c757d;
+            --negro: #212529;
+            --sombra-suave: 0 8px 32px rgba(40, 167, 69, 0.1);
+            --sombra-elevada: 0 16px 48px rgba(40, 167, 69, 0.15);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--gris-claro) 0%, var(--blanco) 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+            color: var(--negro);
+        }
+
+        .barra-navegacion {
+            background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+            backdrop-filter: blur(10px);
+            box-shadow: var(--sombra-suave);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .contenedor-navegacion {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-marca {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--blanco);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-marca:hover {
+            transform: translateY(-2px);
+            color: var(--blanco);
+        }
+
+        .icono-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .menu-navegacion {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .enlace-nav {
+            color: var(--blanco);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enlace-nav::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .enlace-nav:hover::before {
+            left: 100%;
+        }
+
+        .enlace-nav:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            color: var(--blanco);
+        }
+
+        .contenedor-principal {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        .pie-pagina {
+            background: var(--negro);
+            color: var(--blanco);
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            position: relative;
+        }
+
+        .pie-pagina::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--verde-primario), var(--verde-secundario));
+        }
+
+        .contenedor-pie {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .boton-menu-movil {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--blanco);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .boton-menu-movil:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .animacion-entrada {
+            animation: deslizarArriba 0.8s ease-out;
+        }
+
+        @keyframes deslizarArriba {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .boton-menu-movil {
+                display: block;
+            }
+
+            .menu-navegacion {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--verde-primario);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--sombra-suave);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .menu-navegacion.activo {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .contenedor-navegacion {
+                padding: 1rem;
+                position: relative;
+            }
+
+            .contenedor-principal {
+                padding: 1rem;
+            }
+        }
+
+        .gradiente-texto {
+            background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .efecto-cristal {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+    </style>
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'aprendices:inicio' %}">
-                <img width="50px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSX6Gat1r36ATdBS7sTqqFH8TvIVPMkqsdLgw&s" alt="Logo Sena">
-                <strong>SENA APP</strong>
+    <nav class="barra-navegacion">
+        <div class="contenedor-navegacion">
+            <a href="{% url 'aprendices:inicio' %}" class="logo-marca">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSX6Gat1r36ATdBS7sTqqFH8TvIVPMkqsdLgw&s" 
+                        alt="Logo SENA" class="icono-logo">
+                <span>SENA APP</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            
+            <button class="boton-menu-movil" onclick="alternarMenu()">
+                <i class="fas fa-bars"></i>
             </button>
             
+            <ul class="menu-navegacion" id="menuNavegacion">
+                <li><a href="{% url 'aprendices:inicio' %}" class="enlace-nav">
+                    <i class="fas fa-home"></i> Inicio
+                </a></li>
+                <li><a href="{% url 'aprendices:lista_aprendices' %}" class="enlace-nav">
+                    <i class="fas fa-users"></i> Aprendices
+                </a></li>
+                <li><a href="{% url 'instructores:lista_instructores' %}" class="enlace-nav">
+                    <i class="fas fa-users"></i> Instructores
+                </a></li>
+                
+                <li><a href="{% url 'admin:index' %}" class="enlace-nav">
+                    <i class="fas fa-cog"></i> Panel Administrativo
+                </a></li>
+            </ul>
         </div>
     </nav>
 
-    <main class="container mt-4">
+    <main class="contenedor-principal">
         {% block content %}
         {% endblock %}
     </main>
 
-    <footer class="bg-dark text-white text-center py-3 mt-5">
-        <div class="container">
-            <p>&copy; 2025 SENA APP - Sistema de Gestión de Aprendices</p>
+    <footer class="pie-pagina">
+        <div class="contenedor-pie">
+            <p>&copy; 2025 SENA APP - Sistema Integral de Gestión Académica</p>
+            <p style="opacity: 0.7; margin-top: 0.5rem;">Servicio Nacional de Aprendizaje</p>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function alternarMenu() {
+            const menu = document.getElementById('menuNavegacion');
+            menu.classList.toggle('activo');
+        }
+
+        document.querySelectorAll('.enlace-nav').forEach(enlace => {
+            enlace.addEventListener('click', () => {
+                const menu = document.getElementById('menuNavegacion');
+                menu.classList.remove('activo');
+            });
+        });
+
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.barra-navegacion');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'linear-gradient(135deg, rgba(40, 167, 69, 0.95), rgba(32, 201, 151, 0.95))';
+                navbar.style.backdropFilter = 'blur(15px)';
+            } else {
+                navbar.style.background = 'linear-gradient(135deg, var(--verde-primario), var(--verde-secundario))';
+                navbar.style.backdropFilter = 'blur(10px)';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const elementos = document.querySelectorAll('.animacion-entrada');
+            elementos.forEach((elemento, indice) => {
+                elemento.style.animationDelay = `${indice * 0.1}s`;
+            });
+        });
+    </script>
 </body>
 
 </html>

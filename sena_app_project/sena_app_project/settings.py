@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'aprendices',
+    "instructores",
+    'programas',
 ]
 
 MIDDLEWARE = [
@@ -121,7 +123,3 @@ STATIC_URL = '/static/'
 # Directorio donde `collectstatic` reunirá todos los archivos para producción.
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 
-# Directorios adicionales donde Django buscará archivos estáticos.
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
