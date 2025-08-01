@@ -1,237 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SENA APP - Sistema Integral de Gestión Académica{% endblock %}</title>
-    {% load static %}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --verde-primario: #28a745;
-            --verde-secundario: #20c997;
-            --verde-oscuro: #1e7e34;
-            --verde-claro: #d4edda;
-            --blanco: #ffffff;
-            --gris-claro: #f8f9fa;
-            --gris-medio: #6c757d;
-            --negro: #212529;
-            --sombra-suave: 0 8px 32px rgba(40, 167, 69, 0.1);
-            --sombra-elevada: 0 16px 48px rgba(40, 167, 69, 0.15);
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--gris-claro) 0%, var(--blanco) 100%);
-            min-height: 100vh;
-            line-height: 1.6;
-            color: var(--negro);
-        }
-
-        .barra-navegacion {
-            background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
-            backdrop-filter: blur(10px);
-            box-shadow: var(--sombra-suave);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .contenedor-navegacion {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-marca {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            color: var(--blanco);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-
-        .logo-marca:hover {
-            transform: translateY(-2px);
-            color: var(--blanco);
-        }
-
-        .icono-logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            padding: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        .menu-navegacion {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .enlace-nav {
-            color: var(--blanco);
-            text-decoration: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .enlace-nav::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .enlace-nav:hover::before {
-            left: 100%;
-        }
-
-        .enlace-nav:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
-            color: var(--blanco);
-        }
-
-        .contenedor-principal {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-            min-height: calc(100vh - 200px);
-        }
-
-        .pie-pagina {
-            background: var(--negro);
-            color: var(--blanco);
-            text-align: center;
-            padding: 3rem 2rem;
-            margin-top: 4rem;
-            position: relative;
-        }
-
-        .pie-pagina::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--verde-primario), var(--verde-secundario));
-        }
-
-        .contenedor-pie {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .boton-menu-movil {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--blanco);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: background 0.3s ease;
-        }
-
-        .boton-menu-movil:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .animacion-entrada {
-            animation: deslizarArriba 0.8s ease-out;
-        }
-
-        @keyframes deslizarArriba {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .boton-menu-movil {
-                display: block;
-            }
-
-            .menu-navegacion {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--verde-primario);
-                flex-direction: column;
-                padding: 1rem;
-                box-shadow: var(--sombra-suave);
-                transform: translateY(-100%);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-            }
-
-            .menu-navegacion.activo {
-                transform: translateY(0);
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .contenedor-navegacion {
-                padding: 1rem;
-                position: relative;
-            }
-
-            .contenedor-principal {
-                padding: 1rem;
-            }
-        }
-
-        .gradiente-texto {
-            background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .efecto-cristal {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-
 <body>
     <nav class="barra-navegacion">
         <div class="contenedor-navegacion">
@@ -255,7 +32,9 @@
                 <li><a href="{% url 'instructores:lista_instructores' %}" class="enlace-nav">
                     <i class="fas fa-users"></i> Instructores
                 </a></li>
-                
+                <li><a href="{% url 'programas:lista_programas' %}" class="enlace-nav">
+                        Programas
+                </a></li>
                 <li><a href="{% url 'admin:index' %}" class="enlace-nav">
                     <i class="fas fa-cog"></i> Panel Administrativo
                 </a></li>
@@ -270,7 +49,7 @@
 
     <footer class="pie-pagina">
         <div class="contenedor-pie">
-            <p>&copy; 2025 SENA APP - Sistema Integral de Gestión Académica</p>
+            <p>© 2025 SENA APP - Sistema Integral de Gestión Académica</p>
             <p style="opacity: 0.7; margin-top: 0.5rem;">Servicio Nacional de Aprendizaje</p>
         </div>
     </footer>
@@ -284,7 +63,9 @@
         document.querySelectorAll('.enlace-nav').forEach(enlace => {
             enlace.addEventListener('click', () => {
                 const menu = document.getElementById('menuNavegacion');
-                menu.classList.remove('activo');
+                if (menu.classList.contains('activo')) {
+                    menu.classList.remove('activo');
+                }
             });
         });
 
@@ -307,5 +88,4 @@
         });
     </script>
 </body>
-
 </html>

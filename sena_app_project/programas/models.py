@@ -1,5 +1,6 @@
 from django.db import models
 
+# Create your models here.
 class Programa(models.Model):
     NIVEL_FORMACION_CHOICES = [
         ('AUX', 'Auxiliar'),

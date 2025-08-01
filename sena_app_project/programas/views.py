@@ -1,14 +1,18 @@
 from django.http import HttpResponse
 from django.template import loader
+from django.shortcuts import render
 from .models import Programa
 
-# Create your views here.
-
 def programas(request):
-    lista_programas = Programa.objects.all()
+    """
+    Vista para mostrar la lista de programas formativos
+    Obtiene todos los programas ordenados por nombre
+    """
+    lista_programas = Programa.objects.all().order_by('nombre')
     template = loader.get_template('lista_programas.html')
-    context = {
-    'lista_programas': lista_programas,
-    'total_programas': lista_programas.count(),
+    contexto = {
+        'lista_programas': lista_programas,
+        'total_programas': lista_programas.count(),
     }
-    return HttpResponse(template.render(context, request))
+    
+    return HttpResponse(template.render(contexto, request))

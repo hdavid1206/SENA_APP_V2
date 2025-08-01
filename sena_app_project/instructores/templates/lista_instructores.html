@@ -625,11 +625,6 @@
                     <span class="fecha-formateada">{{ instructor.fecha_ingreso|date:"d/m/Y" }}</span>
                 </td>
                 <td>
-                    <a href="{% url 'instructores:detalle_instructor' instructor.pk %}" 
-                        class="boton-accion boton-ver" title="Ver detalles del instructor">
-                        <i class="fas fa-eye"></i>
-                        Ver
-                    </a>
                     <a href="{% url 'admin:instructores_instructor_change' instructor.pk %}" 
                         class="boton-accion" title="Editar información del instructor">
                         <i class="fas fa-edit"></i>
