@@ -1,8 +1,9 @@
 from django.http import HttpResponse
 from django.template import loader
-from .models import Aprendiz
+from .models import Aprendiz, Curso
 from django.shortcuts import render
 from instructores.models import Instructor
+from django.shortcuts import get_object_or_404
 # Create your views here.
 
 def aprendices(request):
@@ -17,7 +18,8 @@ def aprendices(request):
 def inicio(request):
     total_aprendices = Aprendiz.objects.count()
     total_instructores = Instructor.objects.count()
-    total_programas = 0
+    total_programas = Curso.objects.count()
+    cursos_activos = Curso.objects.filter(estado__in=['INI', 'EJE']).count()
     
     context = {
         'total_aprendices': total_aprendices,
@@ -27,3 +29,29 @@ def inicio(request):
     
     template = loader.get_template('inicio.html')
     return render(request, 'inicio.html', context)
+
+def lista_cursos(request):
+    cursos = Curso.objects.all().order_by('-fecha_inicio')
+    template = loader.get_template("lista_cursos.html")
+    
+    context = {
+        'lista_cursos': cursos,
+        'total_cursos': cursos.count(),
+        'titulo':'Lista de Cursos'
+    }
+    
+    return HttpResponse(template.render(context, request))
+
+def detalle_curso(request, curso_id):
+    curso = get_object_or_404(Curso, id=curso_id)
+    aprendices_curso = curso.instructorcurso_set.all()
+    instructores_curso = curso.instructorcurso_set.all()
+    template = loader.get_template('detalle_curso.html')
+    
+    context = {
+        'curso': curso,
+        'aprendices_curso': aprendices_curso,
+        'instructores_curso': instructores_curso,
+    }
+
+    return HttpResponse(template.render(context,request))
