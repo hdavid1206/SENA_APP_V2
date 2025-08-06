@@ -25,6 +25,11 @@
                 <i class="fas fa-graduation-cap"></i>
                 Consultar Programas
             </a>
+            <a class="boton-hero" href="{% url 'aprendices:lista_cursos' %}">
+                <i class="fas fa-book-open"></i>
+                Consultar Cursos
+            </a>
+            
         </div>
     </div>
 </div>
@@ -44,6 +49,9 @@
             <div class="numero-estadistica">{{ total_programas|default:"0" }}</div>
             <div class="label-estadistica">Programas Disponibles</div>
         </div>
+        <div class="item-estadistica">
+            <div class="numero-estadistica">{{ cursos_activos|default:"0" }}</div>
+            <div class="label-estadistica">Cursos activos</div>
     </div>
 </div>
 
@@ -88,6 +96,20 @@
             </p>
             <a href="{% url 'programas:lista_programas' %}" class="boton-servicio">
                 Consultar Programas
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        <div class="tarjeta-servicio animacion-entrada">
+            <div class="icono-servicio">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h3 class="titulo-servicio">Lista de Cursos</h3>
+            <p class="descripcion-servicio">
+                Visualice los cursos activos actualmente. 
+                Consulte detalles completos sobre cada curso, incluyendo características específicas, duración, instructores y aprendices vinculados a este curso.
+            </p>
+            <a href="{% url 'aprendices:lista_cursos' %}" class="boton-servicio">
+                Ver Programas
                 <i class="fas fa-arrow-right"></i>
             </a>
         </div>

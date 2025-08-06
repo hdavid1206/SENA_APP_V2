@@ -25,12 +25,12 @@ class Aprendiz(models.Model):
     
 class Curso(models.Model):
     ESTADO_CHOICES = [
-        ('PRO', 'Programado')
-        ('INI', 'Iniciado')
-        ('EJE', 'En ejecución')
-        ('FIN', 'Finalizado')
-        ('CAN', 'Cancelado')
-        ('SUS', 'Suspendido')
+        ('PRO', 'Programado'),
+        ('INI', 'Iniciado'),
+        ('EJE', 'En ejecución'),
+        ('FIN', 'Finalizado'),
+        ('CAN', 'Cancelado'),
+        ('SUS', 'Suspendido'),
         ]
     
     codigo = models.CharField(max_length=30,unique=True,verbose_name="Código del Curso")
@@ -52,35 +52,36 @@ class Curso(models.Model):
         verbose_name = "Curso"
         verbose_name_plural = "Cursos"
         ordering = ['-fecha_inicio']
-        
+
     def __str__(self):
         return f"{self.codigo} - {self.nombre}"
-    
+
     def cupos_disponibles(self):
-        return self.cupos_maximos - self.aprendices.count
-    
+        return self.cupos_maximos - self.aprendices.count()
+
     def porcentaje_ocupacion(self):
         if self.cupos_maximos > 0:
             return (self.aprendices.count() / self.cupos_maximos) * 100
         return 0
+
     
     
-    class InstructorCurso(models.Model):
-        instructor = models.ForeignKey('instructores.Instructor', on_delete=models.CASCADE)
-        curso = models.ForeignKey('Curso', on_delete=models.CASCADE)
-        rol = models.CharField(max_length=100, verbose_name="Rol en el Curso")
-        fecha_asignación = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Asignación")
+class InstructorCurso(models.Model):
+    instructor = models.ForeignKey('instructores.Instructor', on_delete=models.CASCADE)
+    curso = models.ForeignKey('Curso', on_delete=models.CASCADE)
+    rol = models.CharField(max_length=100, verbose_name="Rol en el Curso")
+    fecha_asignación = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Asignación")
         
-        class Meta:
+    class Meta:
             verbose_name = "Instructor por Curso"
             verbose_name_plural = "Instructores por Curso"
             unique_together = ['instructor', 'curso']
             
-        def __str__(self):
+    def __str__(self):
             return f"{self.instructor} - {self.curso} ({self.rol})"
         
-    class AprendizCurso(models.Model):
-        ESTADO_CHOICES = [
+class AprendizCurso(models.Model):
+    ESTADO_CHOICES = [
             ("INS", "Inscrito"),
             ("ACT", "Activo"),
             ("DES", "Desertor"),
@@ -88,17 +89,17 @@ class Curso(models.Model):
             ("SUS", "Suspendido"),
         ]
         
-        aprendiz = models.ForeignKey(Aprendiz, on_delete=models.CASCADE)
-        curso = models.ForeignKey("Curso", on_delete=models.CASCADE)
-        fecha_inscripción = models.DateField(auto_now_add=True, verbose_name="Fecha de Inscripción")
-        estado = models.CharField(max_length=3, choices=ESTADO_CHOICES, verbose_name="Nota Final")
-        nota_final = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True, verbose_name="Nota Final")
-        observaciones = models.TextField(blank=True, null=True, verbose_name="Observaciones")
+    aprendiz = models.ForeignKey(Aprendiz, on_delete=models.CASCADE)
+    curso = models.ForeignKey("Curso", on_delete=models.CASCADE)
+    fecha_inscripción = models.DateField(auto_now_add=True, verbose_name="Fecha de Inscripción")
+    estado = models.CharField(max_length=3, choices=ESTADO_CHOICES, verbose_name="Estado en el curso")
+    nota_final = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True, verbose_name="Nota Final")
+    observaciones = models.TextField(blank=True, null=True, verbose_name="Observaciones")
         
-        class Meta:
+    class Meta:
             verbose_name = "Aprendiz por Curso"
             verbose_name_plural = "Aprendices por Curso"
             unique_together = ["aprendiz", "curso"]
             
-            def __str__(self):
-                return f"{self.aprendiz} - {self.curso} ({self.estado})"
+    def __str__(self):
+        return f"{self.aprendiz} - {self.curso} ({self.estado})"

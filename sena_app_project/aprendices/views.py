@@ -25,6 +25,7 @@ def inicio(request):
         'total_aprendices': total_aprendices,
         'total_instructores': total_instructores,
         'total_programas': total_programas,
+        'cursos_activos': cursos_activos,
     }
     
     template = loader.get_template('inicio.html')
