@@ -2217,3 +2217,268 @@ body {
     background-color: var(--verde-primario);
     border-color: var(--verde-primario);
 }
+
+.container-fluid {
+    padding: 0 2rem;
+}
+
+.py-4 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.mb-4 {
+    margin-bottom: 2rem;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+[class^="col-"] {
+    padding: 0 15px;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .col-md-3 { flex: 0 0 25%; max-width: 25%; }
+    .col-md-9 { flex: 0 0 75%; max-width: 75%; }
+    .col-md-8 { flex: 0 0 66.66%; max-width: 66.66%; }
+    .col-md-4 { flex: 0 0 33.33%; max-width: 33.33%; }
+}
+
+@media (min-width: 992px) {
+    .col-lg-6 { flex: 0 0 50%; max-width: 50%; }
+    .col-lg-12 { flex: 0 0 100%; max-width: 100%; }
+}
+
+.d-flex { display: flex; }
+.align-items-center { align-items: center; }
+.justify-content-between { justify-content: space-between; }
+.text-center { text-align: center; }
+.text-primary { color: var(--verde-primario) !important; }
+.text-muted { color: var(--gris-medio) !important; }
+.text-success { color: var(--verde-primario) !important; }
+.bg-light { background-color: var(--gris-claro) !important; }
+.bg-white { background-color: var(--blanco) !important; }
+.bg-success { background-color: var(--verde-claro) !important; color: var(--verde-oscuro); }
+.bg-transparent { background-color: transparent !important; }
+.rounded { border-radius: 15px !important; }
+.p-4 { padding: 2rem !important; }
+.me-1 { margin-right: 0.25rem; }
+.me-2 { margin-right: 0.5rem; }
+.ms-2 { margin-left: 0.5rem; }
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: 0.25rem !important; }
+.mb-2 { margin-bottom: 0.5rem !important; }
+.mb-3 { margin-bottom: 1rem !important; }
+.mt-2 { margin-top: 0.5rem !important; }
+.mt-3 { margin-top: 1rem !important; }
+.h-100 { height: 100% !important; }
+.shadow-sm { box-shadow: var(--sombra-suave) !important; }
+.flex-grow-1 { flex-grow: 1 !important; }
+.px-0 { padding-left: 0 !important; padding-right: 0 !important; }
+.border-0 { border: 0 !important; }
+.border-bottom { border-bottom: 1px solid #dee2e6 !important; }
+
+.breadcrumb {
+    background-color: rgba(40, 167, 69, 0.05);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 0;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: ">";
+    margin: 0 0.8rem;
+    color: var(--gris-medio);
+}
+
+.breadcrumb-item a.back-link {
+    color: var(--verde-primario);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-item a.back-link:hover {
+    color: var(--verde-oscuro);
+    text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+    color: var(--gris-medio);
+    font-weight: 500;
+}
+
+.card {
+    border: none;
+    border-radius: 20px;
+    background-color: var(--blanco);
+}
+
+.card-header {
+    background-color: var(--gris-claro);
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.card-header h4, .card-header h5 {
+    color: var(--negro);
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+.card-body {
+    padding: 2.5rem;
+}
+
+.instructor-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+    color: var(--blanco);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 auto;
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+}
+
+.info-item {
+    margin-bottom: 1.5rem;
+}
+
+.info-item h6 {
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+.info-item p {
+    color: var(--negro);
+    line-height: 1.7;
+}
+
+.info-item a {
+    color: var(--verde-primario);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.info-item a:hover {
+    color: var(--verde-oscuro);
+    text-decoration: underline;
+}
+
+.btn-sm.btn-outline-primary {
+    color: var(--verde-primario);
+    border-color: var(--verde-primario);
+    border-radius: 50px;
+    padding: 0.4rem 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-sm.btn-outline-primary:hover {
+    background-color: var(--verde-primario);
+    color: var(--blanco);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+}
+
+.btn-sm.btn-outline-success {
+    color: var(--verde-primario);
+    border-color: var(--verde-primario);
+    border-radius: 50px;
+    padding: 0.4rem 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-sm.btn-outline-success:hover {
+    background-color: var(--verde-primario);
+    color: var(--blanco);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+}
+
+.list-group {
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.list-group-flush .list-group-item {
+    border-width: 0 0 1px;
+}
+
+.list-group-item {
+    padding: 1rem 0;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+.list-group-item-action {
+    color: var(--negro);
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    padding: 1rem;
+    margin: 0 -1rem;
+    border-radius: 10px;
+}
+
+.list-group-item-action:hover {
+    background-color: rgba(40, 167, 69, 0.05);
+    color: var(--verde-primario);
+    transform: translateX(5px);
+}
+
+.card-footer {
+    background-color: transparent;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    padding: 1rem 2rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.4em 0.8em;
+    font-size: .85em;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 50px;
+}
+
+.badge-sena {
+    background: rgba(40, 167, 69, 0.1);
+    color: var(--verde-oscuro);
+    font-weight: 600;
+}
+
+[class^="bi-"], [class^="fa-"] {
+    line-height: 1;
+    vertical-align: text-bottom;
+}

@@ -1,24 +1,23 @@
-from django.http import HttpResponse
-from django.template import loader
+from django.shortcuts import render, get_object_or_404
 from .models import Aprendiz, Curso
-from django.shortcuts import render
 from instructores.models import Instructor
-from django.shortcuts import get_object_or_404
+from programas.models import Programa # Asegúrate de importar Programa si no lo has hecho
+
 # Create your views here.
 
 def aprendices(request):
     lista_aprendices = Aprendiz.objects.all().order_by('apellido', 'nombre')
-    total_aprendices = lista_aprendices.count()
     context = {
         'lista_aprendices': lista_aprendices,
-        'total_aprendices': total_aprendices,
+        'total_aprendices': lista_aprendices.count(),
     }
     return render(request, 'lista_aprendices.html', context)
 
 def inicio(request):
     total_aprendices = Aprendiz.objects.count()
     total_instructores = Instructor.objects.count()
-    total_programas = Curso.objects.count()
+    # Asumo que tienes un modelo Programa en una app 'programas'
+    total_programas = Programa.objects.count() 
     cursos_activos = Curso.objects.filter(estado__in=['INI', 'EJE']).count()
     
     context = {
@@ -27,32 +26,32 @@ def inicio(request):
         'total_programas': total_programas,
         'cursos_activos': cursos_activos,
     }
-    
-    template = loader.get_template('inicio.html')
     return render(request, 'inicio.html', context)
 
 def lista_cursos(request):
     cursos = Curso.objects.all().order_by('-fecha_inicio')
-    template = loader.get_template("lista_cursos.html")
-    
     context = {
         'lista_cursos': cursos,
         'total_cursos': cursos.count(),
-        'titulo':'Lista de Cursos'
     }
-    
-    return HttpResponse(template.render(context, request))
+    return render(request, "lista_cursos.html", context)
 
 def detalle_curso(request, curso_id):
     curso = get_object_or_404(Curso, id=curso_id)
-    aprendices_curso = curso.instructorcurso_set.all()
+    # CORRECCIÓN IMPORTANTE AQUÍ: estabas obteniendo instructores en ambas variables
+    aprendices_curso = curso.aprendizcurso_set.all()
     instructores_curso = curso.instructorcurso_set.all()
-    template = loader.get_template('detalle_curso.html')
     
     context = {
         'curso': curso,
         'aprendices_curso': aprendices_curso,
         'instructores_curso': instructores_curso,
     }
+    return render(request, 'detalle_curso.html', context)
 
-    return HttpResponse(template.render(context,request))
+def detalle_aprendiz(request, aprendiz_id):
+    aprendiz = get_object_or_404(Aprendiz, id=aprendiz_id)
+    context = {
+        'aprendiz': aprendiz,
+    }
+    return render(request, 'detalle_aprendiz.html', context)

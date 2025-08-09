@@ -575,10 +575,13 @@
                 data-estado="{{ instructor.estado }}" 
                 data-modalidad="{{ instructor.modalidad_trabajo }}">
                 <td>
+                <a href="{% url 'instructores:detalle_instructor' instructor.id %}">
                     <span class="codigo-destacado">{{ instructor.codigo_instructor }}</span>
+                </a>
                 </td>
                 <td>
                     <div>
+                        
                         <div class="nombre-instructor">{{ instructor.nombre_completo }}</div>
                         <div class="documento-instructor">{{ instructor.get_tipo_documento_display }}: {{ instructor.documento_identidad }}</div>
                     </div>

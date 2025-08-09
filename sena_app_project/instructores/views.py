@@ -1,10 +1,7 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import loader
+from django.shortcuts import render, get_object_or_404
 from .models import Instructor
 
 def lista_instructores(request):
-
     lista_instructores = Instructor.objects.all().order_by('apellidos', 'nombres')
     total_instructores = lista_instructores.count()
     
@@ -19,18 +16,22 @@ def lista_instructores(request):
         'instructores_presenciales': instructores_presenciales,
         'instructores_virtuales': instructores_virtuales,
     }
-    
+    # Usamos el atajo render directamente
     return render(request, 'lista_instructores.html', context)
 
 def detalle_instructor(request, instructor_id):
+    instructor = get_object_or_404(Instructor, id=instructor_id)
 
-    try:
-        instructor = Instructor.objects.get(pk=instructor_id)
-    except Instructor.DoesNotExist:
-        return render(request, '404.html', {'mensaje': 'Instructor no encontrado'})
+    cursos_coordinados = instructor.cursos_coordinados.all()
+    cursos_impartidos = instructor.cursos_impartidos.all()
     
     context = {
         'instructor': instructor,
+        'cursos_coordinados': cursos_coordinados,
+        'cursos_impartidos': cursos_impartidos,
     }
     
     return render(request, 'detalle_instructor.html', context)
+    
+    
+

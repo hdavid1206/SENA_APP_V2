@@ -58,7 +58,8 @@
             {% for aprendiz in lista_aprendices %}
             <tr class="fila-aprendiz">
                 <td>
-                    <span class="documento-destacado">{{ aprendiz.documento_identidad }}</span>
+                    <a href= "aprendiz/{{ aprendiz.id }}"> <span class="documento-destacado">{{ aprendiz.documento_identidad }}</span> 
+                        </a>
                 </td>
                 <td>
                     <strong>{{ aprendiz.nombre_completo }}</strong>
