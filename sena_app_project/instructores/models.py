@@ -20,6 +20,13 @@ class Instructor(models.Model):
         ('VIRTUAL', 'Virtual'),
         ('MIXTA', 'Mixta'),
     ]
+    
+    NIVEL_EDUCATIVO_CHOICES = [
+        ('LICENCIADO', 'Licenciado'),
+        ('INGENIERO', 'Ingeniero'),
+        ('MAGISTER', 'Magíster'),
+        ('DOCTOR', 'Doctor'),
+    ]
 
     # Información Personal
     tipo_documento = models.CharField(
@@ -59,6 +66,7 @@ class Instructor(models.Model):
     
     # Información Académica
     nivel_educativo = models.CharField(
+        choices=NIVEL_EDUCATIVO_CHOICES,
         max_length=100,
         verbose_name='Nivel Educativo',
         help_text='Ej: Licenciado, Ingeniero, Magíster, Doctor'
