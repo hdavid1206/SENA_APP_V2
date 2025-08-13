@@ -908,11 +908,10 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
-
 .btn_saveA {
     
     background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
-    margin: 0 , auto;
+    margin: 0 auto;
     color: var(--blanco);
     padding: 1rem 2.5rem;
     border: none;

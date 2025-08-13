@@ -59,9 +59,13 @@
                 <p class="descripcion-vacio">Aún no se han agregado programas de formación al sistema.</p>
             </div>
         {% endif %}
-        <a href="{% url 'admin:programas_programa_add' %}" class="btn_saveA">
+        
+        <center>
+            <a href="{% url 'programas:lista_programas' %}" class="btn_saveA">
             <i class="fas fa-plus"></i> Nuevo Programa
         </a>
+    </center>
     </section>
 </div>
+
 {% endblock %}
