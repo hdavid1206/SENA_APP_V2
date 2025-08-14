@@ -1,12 +1,9 @@
 from django.urls import path
-from . import views
-from .views import ProgramaCreateView
+from .views import ProgramaCreateView, programas
 
 app_name = 'programas'
 
 urlpatterns = [
-    path('programas/', views.programas, name='lista_programas'),
-    
-    # Nueva ruta para la página de creación de programas
-    path('crear_programa/', views.ProgramaCreateView.as_view(), name='crear_programa'),
+    path('', programas, name='lista_programas'),
+    path('crear_programa/', ProgramaCreateView.as_view(), name='crear_programa'),
 ]
