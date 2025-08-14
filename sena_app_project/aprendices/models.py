@@ -1,15 +1,20 @@
 from django.db import models
-
-# Create your models here.
 class Aprendiz(models.Model):
     documento_identidad = models.CharField(max_length=20, unique=True)
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
-    telefono = models.CharField(max_length=10, null=True)
-    correo = models.EmailField(null=True)
+    telefono = models.CharField(max_length=10, null=True, blank=True)
+    correo = models.EmailField(null=True, blank=True)
     fecha_nacimiento = models.DateField()
-    ciudad = models.CharField(max_length=100, null=True)
-    programa = models.CharField(max_length=100)
+    ciudad = models.CharField(max_length=100, null=True, blank=True)
+    
+    programa = models.ForeignKey(
+        'programas.Programa', 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        verbose_name="Programa de Formación"
+    )
     
     class Meta:
         verbose_name = "Aprendiz"
@@ -21,8 +26,7 @@ class Aprendiz(models.Model):
     
     def nombre_completo(self):
         return f"{self.nombre} {self.apellido}"
-    
-    
+
 class Curso(models.Model):
     ESTADO_CHOICES = [
         ('PRO', 'Programado'),
@@ -64,8 +68,6 @@ class Curso(models.Model):
             return (self.aprendices.count() / self.cupos_maximos) * 100
         return 0
 
-    
-    
 class InstructorCurso(models.Model):
     instructor = models.ForeignKey('instructores.Instructor', on_delete=models.CASCADE)
     curso = models.ForeignKey('Curso', on_delete=models.CASCADE)
