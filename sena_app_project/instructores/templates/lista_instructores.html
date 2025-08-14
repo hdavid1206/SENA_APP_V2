@@ -1,9 +1,46 @@
 {% extends 'base.html' %}
 
-{% block title %}Directorio de Instructores - Sistema Integral SENA{% endblock %}
+{% block title %}Directorio de Instructores{% endblock %}
 
 {% block content %}
 <style>
+    /* Estilos globales y paleta de colores de styles.css */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --verde-primario: #28a745;
+        --verde-secundario: #20c997;
+        --verde-oscuro: #1e7e34;
+        --verde-claro: #d4edda;
+        --blanco: #ffffff;
+        --gris-claro: #f8f9fa;
+        --gris-medio: #6c757d;
+        --negro: #212529;
+        --sombra-suave: 0 8px 32px rgba(40, 167, 69, 0.1);
+        --sombra-elevada: 0 16px 48px rgba(40, 167, 69, 0.15);
+        --color-fondo: #f0f4f7;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--color-fondo);
+        min-height: 100vh;
+        line-height: 1.6;
+        color: var(--negro);
+    }
+
+    /* Contenedor principal para el contenido */
+    .contenedor-principal {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    /* Estilo para el encabezado de la página */
     .encabezado-pagina {
         background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
         border-radius: 20px;
@@ -13,6 +50,11 @@
         position: relative;
         overflow: hidden;
         box-shadow: var(--sombra-elevada);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
     }
 
     .encabezado-pagina::before {
@@ -29,16 +71,6 @@
     @keyframes ondular {
         0%, 100% { transform: translateX(0px) translateY(0px); }
         50% { transform: translateX(-10px) translateY(-10px); }
-    }
-
-    .contenedor-encabezado {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: relative;
-        z-index: 2;
-        flex-wrap: wrap;
-        gap: 1rem;
     }
 
     .info-encabezado h2 {
@@ -99,709 +131,152 @@
         color: var(--verde-primario);
     }
 
-    .seccion-estadisticas {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 3rem;
-    }
-
-    .tarjeta-estadistica {
-        background: var(--blanco);
-        border-radius: 15px;
-        padding: 1.5rem;
-        box-shadow: var(--sombra-suave);
-        border: 1px solid rgba(40, 167, 69, 0.1);
-        text-align: center;
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .tarjeta-estadistica::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background: linear-gradient(90deg, var(--verde-primario), var(--verde-secundario));
-    }
-
-    .tarjeta-estadistica:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--sombra-elevada);
-    }
-
-    .numero-estadistica {
-        font-size: 2rem;
-        font-weight: 800;
-        color: var(--verde-primario);
-        margin-bottom: 0.5rem;
-    }
-
-    .label-estadistica {
-        color: var(--gris-medio);
-        font-size: 0.9rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .seccion-filtros {
-        background: var(--blanco);
-        border-radius: 15px;
+    /* Sección de tabla */
+    .seccion-tabla {
+        background-color: var(--blanco);
         padding: 2rem;
-        margin-bottom: 2rem;
-        box-shadow: var(--sombra-suave);
-        border: 1px solid rgba(40, 167, 69, 0.1);
-    }
-
-    .contenedor-filtros {
-        display: grid;
-        grid-template-columns: 1fr auto auto auto;
-        gap: 1rem;
-        align-items: center;
-    }
-
-    .campo-busqueda {
-        position: relative;
-    }
-
-    .entrada-busqueda {
-        width: 100%;
-        padding: 1rem 1rem 1rem 3rem;
-        border: 2px solid rgba(40, 167, 69, 0.1);
-        border-radius: 50px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        background: var(--gris-claro);
-    }
-
-    .entrada-busqueda:focus {
-        outline: none;
-        border-color: var(--verde-primario);
-        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
-        background: var(--blanco);
-    }
-
-    .icono-busqueda {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--gris-medio);
-        font-size: 1.1rem;
-    }
-
-    .filtro-select {
-        padding: 1rem;
-        border: 2px solid rgba(40, 167, 69, 0.1);
-        border-radius: 10px;
-        background: var(--blanco);
-        font-size: 0.9rem;
-        min-width: 150px;
-    }
-
-    .boton-filtro {
-        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
-        color: var(--blanco);
-        border: none;
-        padding: 1rem 2rem;
-        border-radius: 50px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .boton-filtro:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-    }
-
-    .contenedor-tabla {
-        background: var(--blanco);
         border-radius: 20px;
-        overflow: hidden;
         box-shadow: var(--sombra-suave);
-        border: 1px solid rgba(40, 167, 69, 0.1);
     }
 
+    .encabezado-tabla {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--verde-claro);
+    }
+
+    .titulo-seccion {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--negro);
+        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    /* Tabla */
     .tabla-moderna {
         width: 100%;
         border-collapse: collapse;
-        font-size: 0.95rem;
-    }
-
-    .tabla-moderna thead {
-        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
-        color: var(--blanco);
-    }
-
-    .tabla-moderna th {
-        padding: 1.5rem 1rem;
         text-align: left;
+    }
+
+    .tabla-moderna th, .tabla-moderna td {
+        padding: 15px 20px;
+        border-bottom: 1px solid var(--gris-claro);
+    }
+
+    .tabla-moderna thead th {
+        background-color: var(--gris-claro);
         font-weight: 600;
+        color: var(--gris-medio);
         text-transform: uppercase;
         font-size: 0.85rem;
-        letter-spacing: 1px;
-        border: none;
-    }
-
-    .tabla-moderna td {
-        padding: 1.2rem 1rem;
-        border-bottom: 1px solid rgba(40, 167, 69, 0.1);
-        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
     }
 
     .tabla-moderna tbody tr {
-        transition: all 0.3s ease;
+        transition: background-color 0.3s ease;
     }
 
     .tabla-moderna tbody tr:hover {
-        background: rgba(40, 167, 69, 0.05);
-        transform: scale(1.01);
+        background-color: var(--verde-claro);
     }
 
-    .tabla-moderna tbody tr:nth-of-type(even) {
-        background: rgba(40, 167, 69, 0.02);
+    /* Botones de acción */
+    .acciones-tabla {
+        display: flex;
+        gap: 10px;
     }
 
-    .codigo-destacado {
-        font-weight: 700;
-        color: var(--verde-primario);
-        font-size: 1rem;
-        font-family: 'Courier New', monospace;
-    }
-
-    .nombre-instructor {
-        font-weight: 600;
-        color: var(--negro);
-        font-size: 1rem;
-    }
-
-    .documento-instructor {
-        color: var(--gris-medio);
-        font-size: 0.9rem;
-    }
-
-    .enlace-correo {
-        color: var(--verde-primario);
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .enlace-correo:hover {
-        color: var(--verde-oscuro);
-        text-decoration: underline;
-    }
-
-    .especialidad-etiqueta {
-        background: rgba(40, 167, 69, 0.1);
-        color: var(--verde-oscuro);
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 500;
-        display: inline-block;
-    }
-
-    .estado-etiqueta {
-        padding: 0.3rem 0.8rem;
-        border-radius: 15px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
-
-    .estado-activo {
-        background: rgba(40, 167, 69, 0.1);
-        color: var(--verde-oscuro);
-    }
-
-    .estado-inactivo {
-        background: rgba(220, 53, 69, 0.1);
-        color: #dc3545;
-    }
-
-    .estado-vacaciones {
-        background: rgba(255, 193, 7, 0.1);
-        color: #ffc107;
-    }
-
-    .estado-licencia {
-        background: rgba(23, 162, 184, 0.1);
-        color: #17a2b8;
-    }
-
-    .modalidad-icono {
-        font-size: 1.2rem;
-        margin-right: 0.5rem;
-    }
-
-    .fecha-formateada {
-        color: var(--gris-medio);
-        font-weight: 500;
-        font-size: 0.9rem;
-    }
-
-    .boton-accion {
-        background: linear-gradient(135deg, #007bff, #0056b3);
+    .btn_info {
+        background: linear-gradient(135deg, #0d6efd, #0b5ed7);
         color: var(--blanco);
-        padding: 0.5rem 1.2rem;
-        border: none;
-        border-radius: 20px;
+        padding: 8px 12px;
+        border-radius: 8px;
         text-decoration: none;
-        font-size: 0.85rem;
-        font-weight: 600;
+        font-size: 0.9rem;
         transition: all 0.3s ease;
         display: inline-flex;
         align-items: center;
-        gap: 0.3rem;
-        margin-right: 0.5rem;
     }
 
-    .boton-accion:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
-        color: var(--blanco);
+    .btn_info:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
     }
 
-    .boton-ver {
-        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+    .btn_info i {
+        margin-right: 5px;
     }
 
-    .boton-ver:hover {
-        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-    }
-
-    .estado-vacio {
+    .sin-instructores {
         text-align: center;
-        padding: 4rem 2rem;
-        background: var(--blanco);
-        border-radius: 20px;
-        box-shadow: var(--sombra-suave);
-        border: 1px solid rgba(40, 167, 69, 0.1);
-    }
-
-    .icono-vacio {
-        font-size: 4rem;
-        color: rgba(40, 167, 69, 0.3);
-        margin-bottom: 1.5rem;
-    }
-
-    .titulo-vacio {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: var(--negro);
-        margin-bottom: 1rem;
-    }
-
-    .descripcion-vacio {
         color: var(--gris-medio);
-        margin-bottom: 2rem;
-        font-size: 1.1rem;
-        line-height: 1.6;
-    }
-
-    .boton-accion-vacio {
-        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
-        color: var(--blanco);
-        padding: 1rem 2.5rem;
-        border: none;
-        border-radius: 50px;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 1.1rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-    }
-
-    .boton-accion-vacio:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
-        color: var(--blanco);
-    }
-
-    @media (max-width: 768px) {
-        .contenedor-encabezado {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .controles-encabezado {
-            justify-content: center;
-        }
-
-        .contenedor-filtros {
-            grid-template-columns: 1fr;
-        }
-
-        .encabezado-pagina {
-            padding: 2rem 1rem;
-        }
-
-        .info-encabezado h2 {
-            font-size: 1.8rem;
-        }
-
-        .seccion-estadisticas {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .tabla-moderna {
-            font-size: 0.85rem;
-        }
-
-        .tabla-moderna th,
-        .tabla-moderna td {
-            padding: 0.8rem 0.5rem;
-        }
-
-        .contenedor-tabla {
-            overflow-x: auto;
-        }
-
-        .tabla-moderna {
-            min-width: 1000px;
-        }
-    }
-
-    .aparecer {
-        animation: aparecer 0.6s ease-out;
-    }
-
-    @keyframes aparecer {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        padding: 2rem;
+        font-style: italic;
     }
 </style>
 
-<div class="encabezado-pagina animacion-entrada">
-    <div class="contenedor-encabezado">
+<div class="contenedor-principal">
+    <div class="encabezado-pagina">
         <div class="info-encabezado">
-            <h2>Directorio de Instructores SENA</h2>
-            <p class="subtitulo-encabezado">Gestión integral del cuerpo docente institucional</p>
+            <h2>Directorio de Instructores</h2>
+            <p class="subtitulo-encabezado">Gestión y control de los instructores SENA</p>
         </div>
         <div class="controles-encabezado">
             <div class="insignia-total">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <span>Total: {{ total_instructores|default:"0" }} instructores</span>
+                <i class="fas fa-users"></i>
+                Total: {{ instructores|length }}
             </div>
-            <a href="{% url 'admin:instructores_instructor_add' %}" class="boton-nuevo">
-                <i class="fas fa-plus"></i>
-                Registrar Instructor
+            <a href="{% url 'instructores:crear_instructor' %}" class="boton-nuevo">
+                <i class="fas fa-user-plus"></i> Añadir Instructor
             </a>
         </div>
     </div>
-</div>
 
-<div class="seccion-estadisticas">
-    <div class="tarjeta-estadistica animacion-entrada">
-        <div class="numero-estadistica">{{ instructores_activos|default:"0" }}</div>
-        <div class="label-estadistica">Instructores Activos</div>
-    </div>
-    <div class="tarjeta-estadistica animacion-entrada">
-        <div class="numero-estadistica">{{ instructores_presenciales|default:"0" }}</div>
-        <div class="label-estadistica">Modalidad Presencial</div>
-    </div>
-    <div class="tarjeta-estadistica animacion-entrada">
-        <div class="numero-estadistica">{{ instructores_virtuales|default:"0" }}</div>
-        <div class="label-estadistica">Modalidad Virtual</div>
-    </div>
-    <div class="tarjeta-estadistica animacion-entrada">
-        <div class="numero-estadistica">{{ total_instructores|default:"0" }}</div>
-        <div class="label-estadistica">Total Registrados</div>
-    </div>
-</div>
-
-<div class="seccion-filtros animacion-entrada">
-    <div class="contenedor-filtros">
-        <div class="campo-busqueda">
-            <i class="fas fa-search icono-busqueda"></i>
-            <input type="text" class="entrada-busqueda" placeholder="Buscar por nombre, documento, especialidad..." id="campoBusqueda">
+    <div class="seccion-tabla">
+        <div class="encabezado-tabla">
+            <h2 class="titulo-seccion">Instructores Registrados</h2>
         </div>
-        <select class="filtro-select" id="filtroEstado">
-            <option value="">Todos los estados</option>
-            <option value="ACTIVO">Activos</option>
-            <option value="INACTIVO">Inactivos</option>
-            <option value="VACACIONES">En Vacaciones</option>
-            <option value="LICENCIA">En Licencia</option>
-        </select>
-        <select class="filtro-select" id="filtroModalidad">
-            <option value="">Todas las modalidades</option>
-            <option value="PRESENCIAL">Presencial</option>
-            <option value="VIRTUAL">Virtual</option>
-            <option value="MIXTA">Mixta</option>
-        </select>
-        <button class="boton-filtro" onclick="exportarDatos()">
-            <i class="fas fa-download"></i>
-            Exportar
-        </button>
+        <div class="tabla-responsiva">
+            <table class="tabla-moderna">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre Completo</th>
+                        <th>Documento</th>
+                        <th>Correo Electrónico</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for instructor in instructores %}
+                    <tr>
+                        <td>{{ instructor.codigo_instructor }}</td>
+                        <td>{{ instructor.nombre_completo }}</td>
+                        <td>{{ instructor.documento_identidad }}</td>
+                        <td>{{ instructor.correo_electronico }}</td>
+                        <td>{{ instructor.estado }}</td>
+                        <td class="acciones-tabla">
+                            <a href="{% url 'instructores:detalle_instructor' instructor.id %}" class="btn_info" title="Ver Detalles">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="sin-instructores">No hay instructores registrados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-
-{% if lista_instructores %}
-<div class="contenedor-tabla animacion-entrada aparecer">
-    <table class="tabla-moderna">
-        <thead>
-            <tr>
-                <th><i class="fas fa-id-badge"></i> Código</th>
-                <th><i class="fas fa-user"></i> Instructor</th>
-                <th><i class="fas fa-envelope"></i> Contacto</th>
-                <th><i class="fas fa-graduation-cap"></i> Especialidad</th>
-                <th><i class="fas fa-desktop"></i> Modalidad</th>
-                <th><i class="fas fa-circle"></i> Estado</th>
-                <th><i class="fas fa-calendar"></i> Ingreso</th>
-                <th><i class="fas fa-cogs"></i> Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="tablaInstructores">
-            {% for instructor in lista_instructores %}
-            <tr class="fila-instructor" 
-                data-estado="{{ instructor.estado }}" 
-                data-modalidad="{{ instructor.modalidad_trabajo }}">
-                <td>
-                <a href="{% url 'instructores:detalle_instructor' instructor.id %}">
-                    <span class="codigo-destacado">{{ instructor.codigo_instructor }}</span>
-                </a>
-                </td>
-                <td>
-                    <div>
-                        
-                        <div class="nombre-instructor">{{ instructor.nombre_completo }}</div>
-                        <div class="documento-instructor">{{ instructor.get_tipo_documento_display }}: {{ instructor.documento_identidad }}</div>
-                    </div>
-                </td>
-                <td>
-                    <div>
-                        <a href="mailto:{{ instructor.correo_electronico }}" class="enlace-correo">
-                            {{ instructor.correo_electronico }}
-                        </a>
-                        <div class="documento-instructor">{{ instructor.telefono_principal }}</div>
-                    </div>
-                </td>
-                <td>
-                    <span class="especialidad-etiqueta">{{ instructor.especialidad }}</span>
-                    <div class="documento-instructor">{{ instructor.experiencia_anos }} años exp.</div>
-                </td>
-                <td>
-                    <div>
-                        {% if instructor.modalidad_trabajo == 'PRESENCIAL' %}
-                            <i class="fas fa-building modalidad-icono" style="color: var(--verde-primario);"></i>
-                        {% elif instructor.modalidad_trabajo == 'VIRTUAL' %}
-                            <i class="fas fa-laptop modalidad-icono" style="color: #007bff;"></i>
-                        {% else %}
-                            <i class="fas fa-blender modalidad-icono" style="color: #6f42c1;"></i>
-                        {% endif %}
-                        {{ instructor.get_modalidad_trabajo_display }}
-                    </div>
-                </td>
-                <td>
-                    <span class="estado-etiqueta estado-{{ instructor.estado|lower }}">
-                        {% if instructor.estado == 'ACTIVO' %}
-                            <i class="fas fa-check-circle"></i>
-                        {% elif instructor.estado == 'INACTIVO' %}
-                            <i class="fas fa-times-circle"></i>
-                        {% elif instructor.estado == 'VACACIONES' %}
-                            <i class="fas fa-umbrella-beach"></i>
-                        {% else %}
-                            <i class="fas fa-pause-circle"></i>
-                        {% endif %}
-                        {{ instructor.get_estado_display }}
-                    </span>
-                </td>
-                <td>
-                    <span class="fecha-formateada">{{ instructor.fecha_ingreso|date:"d/m/Y" }}</span>
-                </td>
-                <td>
-                    <a href="{% url 'admin:instructores_instructor_change' instructor.pk %}" 
-                        class="boton-accion" title="Editar información del instructor">
-                        <i class="fas fa-edit"></i>
-                        Editar
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-{% else %}
-<div class="estado-vacio animacion-entrada">
-    <div class="icono-vacio">
-        <i class="fas fa-chalkboard-teacher"></i>
-    </div>
-    <h3 class="titulo-vacio">No hay instructores registrados</h3>
-    <p class="descripcion-vacio">
-        Actualmente no se encuentran instructores registrados en el sistema institucional.<br>
-        Inicie el proceso de registro para comenzar a gestionar el cuerpo docente.
-    </p>
-    <a href="{% url 'instructores:crear_instructor' %}" class="boton-accion-vacio">
-        <i class="fas fa-plus"></i>
-        Registrar Primer Instructor
-    </a>
-</div>
-{% endif %}
-
-<script>
-    document.getElementById('campoBusqueda').addEventListener('input', function(e) {
-        filtrarInstructores();
-    });
-
-    document.getElementById('filtroEstado').addEventListener('change', function(e) {
-        filtrarInstructores();
-    });
-
-    document.getElementById('filtroModalidad').addEventListener('change', function(e) {
-        filtrarInstructores();
-    });
-
-    function filtrarInstructores() {
-        const terminoBusqueda = document.getElementById('campoBusqueda').value.toLowerCase();
-        const filtroEstado = document.getElementById('filtroEstado').value;
-        const filtroModalidad = document.getElementById('filtroModalidad').value;
-        const filas = document.querySelectorAll('.fila-instructor');
-        
-        filas.forEach(fila => {
-            const texto = fila.textContent.toLowerCase();
-            const estado = fila.getAttribute('data-estado');
-            const modalidad = fila.getAttribute('data-modalidad');
-            
-            const coincideTexto = texto.includes(terminoBusqueda);
-            const coincideEstado = !filtroEstado || estado === filtroEstado;
-            const coincideModalidad = !filtroModalidad || modalidad === filtroModalidad;
-            
-            if (coincideTexto && coincideEstado && coincideModalidad) {
-                fila.style.display = '';
-                fila.classList.add('aparecer');
-            } else {
-                fila.style.display = 'none';
-                fila.classList.remove('aparecer');
-            }
-        });
-
-        // Actualizar contador de resultados
-        const filasVisibles = document.querySelectorAll('.fila-instructor[style=""]').length;
-        actualizarContadorResultados(filasVisibles);
-    }
-
-    function actualizarContadorResultados(cantidad) {
-        const insignia = document.querySelector('.insignia-total span');
-        if (cantidad === {{ total_instructores|default:"0" }}) {
-            insignia.textContent = `Total: ${cantidad} instructores`;
-        } else {
-            insignia.textContent = `Mostrando: ${cantidad} de {{ total_instructores|default:"0" }} instructores`;
-        }
-    }
-
-    function exportarDatos() {
-        alert('Funcionalidad de exportación - Próximamente disponible');
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const elementos = document.querySelectorAll('.animacion-entrada');
-        elementos.forEach((elemento, indice) => {
-            elemento.style.animationDelay = `${indice * 0.1}s`;
-        });
-
-        const filas = document.querySelectorAll('.fila-instructor');
-        filas.forEach(fila => {
-            fila.addEventListener('mouseenter', function() {
-                this.style.background = 'rgba(40, 167, 69, 0.08)';
-                this.style.transform = 'scale(1.02)';
-                this.style.boxShadow = '0 4px 15px rgba(40, 167, 69, 0.1)';
-            });
-            
-            fila.addEventListener('mouseleave', function() {
-                this.style.background = '';
-                this.style.transform = '';
-                this.style.boxShadow = '';
-            });
-        });
-
-        const numerosEstadisticas = document.querySelectorAll('.numero-estadistica');
-        
-        const observador = new IntersectionObserver((entradas) => {
-            entradas.forEach(entrada => {
-                if (entrada.isIntersecting) {
-                    const numero = entrada.target;
-                    const valorFinal = parseInt(numero.textContent);
-                    let valorActual = 0;
-                    const incremento = valorFinal / 30;
-                    
-                    const timer = setInterval(() => {
-                        valorActual += incremento;
-                        if (valorActual >= valorFinal) {
-                            numero.textContent = valorFinal;
-                            clearInterval(timer);
-                        } else {
-                            numero.textContent = Math.floor(valorActual);
-                        }
-                    }, 50);
-                }
-            });
-        });
-        
-        numerosEstadisticas.forEach(numero => observador.observe(numero));
-    });
-
-    document.querySelectorAll('.boton-accion, .boton-nuevo, .boton-filtro').forEach(boton => {
-        boton.addEventListener('click', function(e) {
-            const ripple = document.createElement('span');
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-            
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
-            ripple.classList.add('ripple');
-            
-            this.appendChild(ripple);
-            
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
-        });
-    });
-</script>
-
-<style>
-    .ripple {
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.6);
-        transform: scale(0);
-        animation: ripple-animation 0.6s linear;
-        pointer-events: none;
-    }
-
-    @keyframes ripple-animation {
-        to {
-            transform: scale(4);
-            opacity: 0;
-        }
-    }
-
-    /* Posición relativa para botones con ripple */
-    .boton-accion, .boton-nuevo, .boton-filtro {
-        position: relative;
-        overflow: hidden;
-    }
-</style>
 {% endblock %}

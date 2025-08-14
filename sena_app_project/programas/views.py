@@ -7,7 +7,7 @@ from .models import Programa
 # Vista para la lista de programas
 def programas(request):
     programas_list = Programa.objects.all()
-    return render(request, 'programas/lista_programas.html', {'programas_list': programas_list})
+    return render(request, 'lista_programas.html', {'programas_list': programas_list})
 
 # Vista para crear un programa
 class ProgramaCreateView(CreateView):

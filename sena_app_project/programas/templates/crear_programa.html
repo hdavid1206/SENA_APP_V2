@@ -3,71 +3,195 @@
 {% block title %}Agregar Programa - SENA APP{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-10">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h3 class="card-title mb-0">
-                    <i class="fas fa-plus-circle"></i> Agregar Nuevo Programa de Formación
-                </h3>
-            </div>
-            <div class="card-body">
-                {# Muestra mensajes de éxito/error si los hay #}
-                {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
+<style>
+    :root {
+        --verde-primario: #28a745;
+        --verde-secundario: #20c997;
+        --verde-claro: #d4edda;
+        --blanco: #ffffff;
+        --gris-claro: #f8f9fa;
+        --negro: #212529;
+        --sombra-suave: 0 8px 32px rgba(40, 167, 69, 0.1);
+        --sombra-elevada: 0 16px 48px rgba(40, 167, 69, 0.15);
+        --color-fondo: #f0f4f7;
+    }
 
-                <form method="post" novalidate>
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.codigo.id_for_label }}" class="form-label">{{ form.codigo.label }} <span class="text-danger">*</span></label>
-                            {{ form.codigo }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.nombre.id_for_label }}" class="form-label">{{ form.nombre.label }} <span class="text-danger">*</span></label>
-                            {{ form.nombre }}
-                        </div>
-                    </div>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--color-fondo);
+        color: var(--negro);
+    }
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.nivel_formacion.id_for_label }}" class="form-label">{{ form.nivel_formacion.label }}</label>
-                            {{ form.nivel_formacion }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.modalidad.id_for_label }}" class="form-label">{{ form.modalidad.label }}</label>
-                            {{ form.modalidad }}
-                        </div>
-                    </div>
+    .card {
+        border-radius: 15px;
+        border: none;
+        box-shadow: var(--sombra-suave);
+    }
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.duracion_meses.id_for_label }}" class="form-label">{{ form.duracion_meses.label }}</label>
-                            {{ form.duracion_meses }}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.duracion_horas.id_for_label }}" class="form-label">{{ form.duracion_horas.label }}</label>
-                            {{ form.duracion_horas }}
-                        </div>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="{{ form.descripcion.id_for_label }}" class="form-label">{{ form.descripcion.label }}</label>
-                        {{ form.descripcion }}
-                    </div>
+    .card-header {
+        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+        color: var(--blanco);
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        padding: 1.5rem;
+    }
 
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                        <a href="{% url 'programas:lista_programas' %}" class="btn btn-secondary me-md-2">
-                            <i class="fas fa-times"></i> Cancelar
-                        </a>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Guardar Programa
-                        </button>
-                    </div>
-                </form>
+    .card-title {
+        font-weight: 700;
+        font-size: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--negro);
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid var(--gris-claro);
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--verde-primario);
+        box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+        border: none;
+        border-radius: 50px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        color: var(--blanco);
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.15);
+        color: var(--blanco);
+    }
+
+    .btn-secondary {
+        background-color: var(--gris-medio);
+        border-color: var(--gris-medio);
+        color: var(--blanco);
+        border-radius: 50px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-plus-circle"></i> Agregar Nuevo Programa de Formación
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.codigo.id_for_label }}" class="form-label">{{ form.codigo.label }} <span class="text-danger">*</span></label>
+                                {{ form.codigo }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.nombre.id_for_label }}" class="form-label">{{ form.nombre.label }} <span class="text-danger">*</span></label>
+                                {{ form.nombre }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.nivel_formacion.id_for_label }}" class="form-label">{{ form.nivel_formacion.label }}</label>
+                                {{ form.nivel_formacion }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.modalidad.id_for_label }}" class="form-label">{{ form.modalidad.label }}</label>
+                                {{ form.modalidad }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.duracion_meses.id_for_label }}" class="form-label">{{ form.duracion_meses.label }}</label>
+                                {{ form.duracion_meses }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.duracion_horas.id_for_label }}" class="form-label">{{ form.duracion_horas.label }}</label>
+                                {{ form.duracion_horas }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="{{ form.descripcion.id_for_label }}" class="form-label">{{ form.descripcion.label }}</label>
+                            {{ form.descripcion }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.competencias.id_for_label }}" class="form-label">{{ form.competencias.label }}</label>
+                            {{ form.competencias }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.perfil_egreso.id_for_label }}" class="form-label">{{ form.perfil_egreso.label }}</label>
+                            {{ form.perfil_egreso }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.requisitos_ingreso.id_for_label }}" class="form-label">{{ form.requisitos_ingreso.label }}</label>
+                            {{ form.requisitos_ingreso }}
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.centro_formacion.id_for_label }}" class="form-label">{{ form.centro_formacion.label }}</label>
+                                {{ form.centro_formacion }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.regional.id_for_label }}" class="form-label">{{ form.regional.label }}</label>
+                                {{ form.regional }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.estado.id_for_label }}" class="form-label">{{ form.estado.label }}</label>
+                                {{ form.estado }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.fecha_creacion.id_for_label }}" class="form-label">{{ form.fecha_creacion.label }}</label>
+                                {{ form.fecha_creacion }}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{% url 'programas:lista_programas' %}" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Guardar Programa
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

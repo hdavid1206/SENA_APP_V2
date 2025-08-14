@@ -1,6 +1,216 @@
 {% extends 'base.html' %}
 
+{% block title %}Lista de Programas{% endblock %}
+
 {% block content %}
+<style>
+    :root {
+        --verde-primario: #28a745;
+        --verde-secundario: #20c997;
+        --verde-oscuro: #1e7e34;
+        --verde-claro: #d4edda;
+        --blanco: #ffffff;
+        --gris-claro: #f8f9fa;
+        --gris-medio: #6c757d;
+        --negro: #212529;
+        --sombra-suave: 0 8px 32px rgba(40, 167, 69, 0.1);
+        --sombra-elevada: 0 16px 48px rgba(40, 167, 69, 0.15);
+        --color-fondo: #f0f4f7;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--color-fondo);
+        min-height: 100vh;
+        line-height: 1.6;
+        color: var(--negro);
+    }
+
+    .contenedor-principal {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .encabezado-pagina {
+        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+        border-radius: 20px;
+        padding: 2.5rem;
+        margin-bottom: 3rem;
+        color: var(--blanco);
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--sombra-elevada);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+    .encabezado-pagina::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+        animation: ondular 4s ease-in-out infinite;
+    }
+
+    @keyframes ondular {
+        0%, 100% { transform: translateX(0px) translateY(0px); }
+        50% { transform: translateX(-10px) translateY(-10px); }
+    }
+
+    .info-encabezado h2 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(45deg, var(--blanco), rgba(255, 255, 255, 0.8));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .subtitulo-encabezado {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        font-weight: 300;
+    }
+
+    .controles-encabezado {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .insignia-total {
+        background: rgba(255, 255, 255, 0.2);
+        color: var(--blanco);
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .boton-nuevo {
+        background: var(--blanco);
+        color: var(--verde-primario);
+        padding: 0.8rem 2rem;
+        border: none;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .boton-nuevo:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        color: var(--verde-primario);
+    }
+
+    .seccion-tabla {
+        background-color: var(--blanco);
+        padding: 2rem;
+        border-radius: 20px;
+        box-shadow: var(--sombra-suave);
+    }
+
+    .encabezado-tabla {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--verde-claro);
+    }
+
+    .titulo-seccion {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--negro);
+        background: linear-gradient(135deg, var(--verde-primario), var(--verde-secundario));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .tabla-moderna {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .tabla-moderna th, .tabla-moderna td {
+        padding: 15px 20px;
+        border-bottom: 1px solid var(--gris-claro);
+    }
+
+    .tabla-moderna thead th {
+        background-color: var(--gris-claro);
+        font-weight: 600;
+        color: var(--gris-medio);
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+
+    .tabla-moderna tbody tr {
+        transition: background-color 0.3s ease;
+    }
+
+    .tabla-moderna tbody tr:hover {
+        background-color: var(--verde-claro);
+    }
+
+    .acciones-tabla {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn_info, .btn_edit, .btn_delete {
+        padding: 8px 12px;
+        border-radius: 8px;
+        color: var(--blanco);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .btn_info { background-color: #0d6efd; }
+    .btn_edit { background-color: #ffc107; }
+    .btn_delete { background-color: #dc3545; }
+
+    .btn_info:hover { background-color: #0b5ed7; }
+    .btn_edit:hover { background-color: #ffca2c; }
+    .btn_delete:hover { background-color: #c82333; }
+
+    .btn_info i, .btn_edit i, .btn_delete i { margin-right: 5px; }
+
+    .sin-programas {
+        text-align: center;
+        color: var(--gris-medio);
+        padding: 2rem;
+        font-style: italic;
+    }
+</style>
+
+
 <div class="contenido_la">
     <nav class="navla">
         <div class="t1">
@@ -32,8 +242,7 @@
                         {% for programa in programas_list %}
                         <tr>
                             <td>{{ programa.id }}</td>
-                            <td>{{ programa.nombre_programa }}</td>
-                            <td>{{ programa.descripcion }}</td>
+                            <td>{{ programa.nombre }}</td> <td>{{ programa.descripcion }}</td>
                             <td>
                                 <a href="#" class="btn_info">
                                     <i class="fas fa-eye"></i>
