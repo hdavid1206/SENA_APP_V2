@@ -13,11 +13,11 @@ def programas(request):
 class ProgramaCreateView(CreateView):
     model = Programa
     form_class = ProgramaForm
-    template_name = 'programas/crear_programa.html'
+    template_name = 'crear_programa.html'  # Cambiado aquí
     success_url = reverse_lazy('programas:lista_programas')
 
 # Vista para la lista de programas usando la vista genérica
 class ProgramaListView(ListView):
     model = Programa
-    template_name = 'programas/lista_programas.html'
+    template_name = 'lista_programas.html'
     context_object_name = 'programas_list'
